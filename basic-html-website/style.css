@@ -1,0 +1,31 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto repeat(6, 1fr);
+    grid-template-rows: auto repeat(21, 1fr);
+    gap: 1px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.grid-header {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.grid-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+.point-input {
+    width: 100%;
+    box-sizing: border-box;
+}

@@ -33,7 +33,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 input.type = 'number';
                 input.className = 'point-input';
                 input.addEventListener('input', function() {
-                    updatePlayerTotals(j);
+                    updatePlayerTotals();
+                });
+                input.addEventListener('keydown', function(event) {
+                    handleArrowKeys(event, i, j);
                 });
                 gridItem.appendChild(input);
                 gridContainer.appendChild(gridItem);
@@ -45,10 +48,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const totalHeader = document.createElement('div');
     totalHeader.className = 'grid-header';
     totalHeader.textContent = 'Total';
-    totalHeader.id = 'total-header';
     gridContainer.appendChild(totalHeader);
 
-    for (let i = 0; i < 6; ++) {
+    for (let j = 0; j < 6; j++) {
         const totalItem = document.createElement('div');
         totalItem.className = 'grid-item';
         totalItem.id = `player-total-${j}`;
@@ -56,18 +58,42 @@ document.addEventListener("DOMContentLoaded", function() {
         gridContainer.appendChild(totalItem);
     }
 
-    function updatePlayerTotals(playerIndex) {
-        let total = 0;
-        for (let i = 1; i < 21; i++) {
-            const input = document.querySelector("total header");
-            if (input) {
-                const value = Number(input.value);
-                if (!isNaN(value)) {
-                    total += value;
+    function updatePlayerTotals() {
+        for (let j = 0; j < 6; j++) {
+            let total = 0;
+            for (let i = 1; i < 21; i++) {
+                const input = document.querySelector(`.grid-container > div:nth-child(${i * 7 + j + 2}) .point-input`);
+                if (input) {
+                    total += parseInt(input.value) || 0;
                 }
             }
+            playerTotals[j] = total;
+            document.getElementById(`player-total-${j}`).textContent = total;
         }
-        playerTotals[playerIndex] = total;
-        document.getElementById(`player-total-${playerIndex}`).textContent = total;
+    }
+
+    function handleArrowKeys(event, row, col) {
+        const key = event.key;
+        let newRow = row;
+        let newCol = col;
+
+        if (key === 'ArrowUp') {
+            newRow = row - 1;
+            event.preventDefault();
+        } else if (key === 'ArrowDown') {
+            newRow = row + 1;
+            event.preventDefault();
+        } else if (key === 'ArrowLeft') {
+            newCol = col - 1;
+        } else if (key === 'ArrowRight') {
+            newCol = col + 1;
+        }
+
+        if (newRow >= 1 && newRow <= 20 && newCol >= 0 && newCol < 6) {
+            const nextInput = document.querySelector(`.grid-container > div:nth-child(${newRow * 7 + newCol + 2}) .point-input`);
+            if (nextInput) {
+                nextInput.focus();
+            }
+        }
     }
 });

@@ -1,23 +1,43 @@
 document.addEventListener("DOMContentLoaded", function() {
     const gridContainer = document.getElementById('grid-container');
+    const playerNamesContainer = document.getElementById('player-names');
     const playerTotals = Array(6).fill(0);
+    const playerPhases = Array(6).fill(1);
+
+    // Create player names, total scores, and phase counters in the fixed header
+    for (let j = 0; j < 6; j++) {
+        const playerNameItem = document.createElement('div');
+        const playerNameInput = document.createElement('input');
+        playerNameInput.type = 'text';
+        playerNameInput.placeholder = `Player ${j + 1}`;
+        playerNameItem.appendChild(playerNameInput);
+
+        const totalScoreItem = document.createElement('div');
+        totalScoreItem.id = `player-total-${j}`;
+        totalScoreItem.textContent = 'Total: 0';
+        playerNameItem.appendChild(totalScoreItem);
+
+        const phaseCounterItem = document.createElement('div');
+        phaseCounterItem.id = `player-phase-${j}`;
+        phaseCounterItem.textContent = 'Phase: 1';
+        playerNameItem.appendChild(phaseCounterItem);
+
+        playerNamesContainer.appendChild(playerNameItem);
+    }
 
     // Create grid items
     for (let i = 0; i < 21; i++) {
         if (i === 0) {
-            // First row: input fields for player names
+            // First row: empty header
             const emptyHeader = document.createElement('div');
             emptyHeader.className = 'grid-header';
             gridContainer.appendChild(emptyHeader);
 
             for (let j = 0; j < 6; j++) {
-                const gridItem = document.createElement('div');
-                gridItem.className = 'grid-item';
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.placeholder = `Player ${j + 1}`;
-                gridItem.appendChild(input);
-                gridContainer.appendChild(gridItem);
+                const playerHeader = document.createElement('div');
+                playerHeader.className = 'grid-header';
+                playerHeader.textContent = `Player ${j + 1}`;
+                gridContainer.appendChild(playerHeader);
             }
         } else {
             // Create a new column for round numbers
@@ -29,6 +49,7 @@ document.addEventListener("DOMContentLoaded", function() {
             for (let j = 0; j < 6; j++) {
                 const gridItem = document.createElement('div');
                 gridItem.className = 'grid-item';
+
                 const input = document.createElement('input');
                 input.type = 'number';
                 input.className = 'point-input';
@@ -39,23 +60,22 @@ document.addEventListener("DOMContentLoaded", function() {
                     handleArrowKeys(event, i, j);
                 });
                 gridItem.appendChild(input);
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'phase-checkbox';
+                checkbox.addEventListener('change', function() {
+                    if (checkbox.checked) {
+                        incrementPhase(j);
+                    } else {
+                        decrementPhase(j);
+                    }
+                });
+                gridItem.appendChild(checkbox);
+
                 gridContainer.appendChild(gridItem);
             }
         }
-    }
-
-    // Create total points row
-    const totalHeader = document.createElement('div');
-    totalHeader.className = 'grid-header';
-    totalHeader.textContent = 'Total';
-    gridContainer.appendChild(totalHeader);
-
-    for (let j = 0; j < 6; j++) {
-        const totalItem = document.createElement('div');
-        totalItem.className = 'grid-item';
-        totalItem.id = `player-total-${j}`;
-        totalItem.textContent = '0';
-        gridContainer.appendChild(totalItem);
     }
 
     function updatePlayerTotals() {
@@ -68,7 +88,19 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             }
             playerTotals[j] = total;
-            document.getElementById(`player-total-${j}`).textContent = total;
+            document.getElementById(`player-total-${j}`).textContent = `Total: ${total}`;
+        }
+    }
+
+    function incrementPhase(playerIndex) {
+        playerPhases[playerIndex]++;
+        document.getElementById(`player-phase-${playerIndex}`).textContent = `Phase: ${playerPhases[playerIndex]}`;
+    }
+
+    function decrementPhase(playerIndex) {
+        if (playerPhases[playerIndex] > 1) {
+            playerPhases[playerIndex]--;
+            document.getElementById(`player-phase-${playerIndex}`).textContent = `Phase: ${playerPhases[playerIndex]}`;
         }
     }
 

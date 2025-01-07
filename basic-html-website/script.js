@@ -78,6 +78,32 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+    // Reset button functionality
+    const resetButton = document.getElementById('reset-button');
+    resetButton.addEventListener('click', function() {
+        if (confirm('Are you sure you want to reset?')) {
+            resetGame();
+        }
+    });
+
+    function resetGame() {
+        // Reset all input elements
+        const inputs = document.querySelectorAll('.point-input');
+        inputs.forEach(input => input.value = '');
+
+        // Uncheck all checkboxes
+        const checkboxes = document.querySelectorAll('.phase-checkbox');
+        checkboxes.forEach(checkbox => checkbox.checked = false);
+
+        // Reset player totals and phases
+        for (let j = 0; j < 6; j++) {
+            playerTotals[j] = 0;
+            playerPhases[j] = 1;
+            document.getElementById(`player-total-${j}`).textContent = 'Total: 0';
+            document.getElementById(`player-phase-${j}`).textContent = 'Phase: 1';
+        }
+    }
+
     function updatePlayerTotals() {
         for (let j = 0; j < 6; j++) {
             let total = 0;

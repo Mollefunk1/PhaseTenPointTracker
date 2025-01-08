@@ -1,19 +1,26 @@
 body {
     font-family: Arial, sans-serif;
-    margin: 0;
+    margin: 1px;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    align-items: center; /* Center the content horizontally */
 }
 
 .fixed-header {
     position: fixed;
     top: 0;
-    width: 100%;
+    width: 85%; /* Adjust width to match the grid */
+    max-width: 1200px; /* Ensure max-width is consistent with the grid */
     background-color: #f8f8f8;
     border-bottom: 1px solid #ccc;
     z-index: 1000;
     display: grid;
-    grid-template-columns: auto repeat(6, 1fr);
-    padding: 10px;
+    grid-template-columns: repeat(6, 1fr);
+    padding: 0; /* Adjust padding to center the header */
+    box-sizing: border-box;
+    gap: 1px; /* Ensure consistent spacing with the grid */
 }
 
 .player-names {
@@ -27,17 +34,25 @@ body {
 }
 
 .content {
+    flex: 1; /* Take up remaining space */
     margin-top: 100px; /* Adjust this value based on the height of the fixed header */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%; /* Adjust width to match the grid */
+    max-width: 1200px; /* Ensure max-width is consistent with the grid */
 }
 
 .grid-container {
     display: grid;
-    grid-template-columns: auto repeat(6, 1fr);
+    grid-template-columns: repeat(7, 1fr);
     grid-template-rows: auto repeat(20, 1fr);
-    gap: 1px;
+    gap: 1px; /* Ensure consistent spacing with the header */
     width: 100%;
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 0 auto;
+    box-sizing: border-box;
 }
 
 .grid-header {
@@ -45,12 +60,14 @@ body {
     padding: 10px;
     text-align: center;
     font-weight: bold;
+    box-sizing: border-box;
 }
 
 .grid-item {
     border: 1px solid #ccc;
     padding: 10px;
     text-align: center;
+    box-sizing: border-box;
 }
 
 .point-input {
